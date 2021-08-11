@@ -692,6 +692,7 @@ def detection(self,image,lh_l, fa_l, po_l):
                             po_l.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].y))
                 , [640,480]).astype(int))
     
+    # cv2.rectangle(image, (0, 0), (200, 691), (204, 255, 102), -1) # cover for user
     cv2.rectangle(image, 
                     (coords[0], coords[1]+5), 
                     (coords[0]+len(body_language_class)*20, coords[1]-30), 
@@ -726,7 +727,11 @@ def detection(self,image,lh_l, fa_l, po_l):
         cv2.putText(img_s, str(round(body_language_prob[np.argmax(body_language_prob)],2))
                     , (10,48), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
 
-    label_show(label=self.labelResult, image=img_s)
+    seconds = time.time()
+    de_sec = seconds*10
+    count = (de_sec//1)%5
+    if count == 0:
+        label_show(label=self.labelResult, image=img_s)
 
     return (image)
 
@@ -750,81 +755,86 @@ def plot_world_landmarks(
     shoulder_index_list = [11, 12]
     waist_index_list = [23, 24]
 
-    # 顔
-    face_x, face_y, face_z = [], [], []
-    for index in face_index_list:
-        point = landmark_point[index][1]
-        face_x.append(point[0])
-        face_y.append(point[2])
-        face_z.append(point[1] * (-1))
+    seconds = time.time()
+    de_sec = seconds*10
+    count = (de_sec//1)%5
+    if count == 0:
 
-    # 右腕
-    right_arm_x, right_arm_y, right_arm_z = [], [], []
-    for index in right_arm_index_list:
-        point = landmark_point[index][1]
-        right_arm_x.append(point[0])
-        right_arm_y.append(point[2])
-        right_arm_z.append(point[1] * (-1))
+        # 顔
+        face_x, face_y, face_z = [], [], []
+        for index in face_index_list:
+            point = landmark_point[index][1]
+            face_x.append(point[0])
+            face_y.append(point[2])
+            face_z.append(point[1] * (-1))
 
-    # 左腕
-    left_arm_x, left_arm_y, left_arm_z = [], [], []
-    for index in left_arm_index_list:
-        point = landmark_point[index][1]
-        left_arm_x.append(point[0])
-        left_arm_y.append(point[2])
-        left_arm_z.append(point[1] * (-1))
+        # 右腕
+        right_arm_x, right_arm_y, right_arm_z = [], [], []
+        for index in right_arm_index_list:
+            point = landmark_point[index][1]
+            right_arm_x.append(point[0])
+            right_arm_y.append(point[2])
+            right_arm_z.append(point[1] * (-1))
 
-    # 右半身
-    right_body_side_x, right_body_side_y, right_body_side_z = [], [], []
-    for index in right_body_side_index_list:
-        point = landmark_point[index][1]
-        right_body_side_x.append(point[0])
-        right_body_side_y.append(point[2])
-        right_body_side_z.append(point[1] * (-1))
+        # 左腕
+        left_arm_x, left_arm_y, left_arm_z = [], [], []
+        for index in left_arm_index_list:
+            point = landmark_point[index][1]
+            left_arm_x.append(point[0])
+            left_arm_y.append(point[2])
+            left_arm_z.append(point[1] * (-1))
 
-    # 左半身
-    left_body_side_x, left_body_side_y, left_body_side_z = [], [], []
-    for index in left_body_side_index_list:
-        point = landmark_point[index][1]
-        left_body_side_x.append(point[0])
-        left_body_side_y.append(point[2])
-        left_body_side_z.append(point[1] * (-1))
+        # 右半身
+        right_body_side_x, right_body_side_y, right_body_side_z = [], [], []
+        for index in right_body_side_index_list:
+            point = landmark_point[index][1]
+            right_body_side_x.append(point[0])
+            right_body_side_y.append(point[2])
+            right_body_side_z.append(point[1] * (-1))
 
-    # 肩
-    shoulder_x, shoulder_y, shoulder_z = [], [], []
-    for index in shoulder_index_list:
-        point = landmark_point[index][1]
-        shoulder_x.append(point[0])
-        shoulder_y.append(point[2])
-        shoulder_z.append(point[1] * (-1))
+        # 左半身
+        left_body_side_x, left_body_side_y, left_body_side_z = [], [], []
+        for index in left_body_side_index_list:
+            point = landmark_point[index][1]
+            left_body_side_x.append(point[0])
+            left_body_side_y.append(point[2])
+            left_body_side_z.append(point[1] * (-1))
 
-    # 腰
-    waist_x, waist_y, waist_z = [], [], []
-    for index in waist_index_list:
-        point = landmark_point[index][1]
-        waist_x.append(point[0])
-        waist_y.append(point[2])
-        waist_z.append(point[1] * (-1))
+        # 肩
+        shoulder_x, shoulder_y, shoulder_z = [], [], []
+        for index in shoulder_index_list:
+            point = landmark_point[index][1]
+            shoulder_x.append(point[0])
+            shoulder_y.append(point[2])
+            shoulder_z.append(point[1] * (-1))
+
+        # 腰
+        waist_x, waist_y, waist_z = [], [], []
+        for index in waist_index_list:
+            point = landmark_point[index][1]
+            waist_x.append(point[0])
+            waist_y.append(point[2])
+            waist_z.append(point[1] * (-1))
+                
+        ax.cla()
+        ax.set_xlim3d(-1, 1)
+        ax.set_ylim3d(-1, 1)
+        ax.set_zlim3d(-1, 1)
+
+        ax.scatter(face_x, face_y, face_z)
+        ax.plot(right_arm_x, right_arm_y, right_arm_z)
+        ax.plot(left_arm_x, left_arm_y, left_arm_z)
+        ax.plot(right_body_side_x, right_body_side_y, right_body_side_z)
+        ax.plot(left_body_side_x, left_body_side_y, left_body_side_z)
+        ax.plot(shoulder_x, shoulder_y, shoulder_z)
+        ax.plot(waist_x, waist_y, waist_z)
+
+        plt.savefig.jpeg_quality = 50
+        plt.savefig('coords_fig/coords.jpg')
             
-    ax.cla()
-    ax.set_xlim3d(-1, 1)
-    ax.set_ylim3d(-1, 1)
-    ax.set_zlim3d(-1, 1)
-
-    ax.scatter(face_x, face_y, face_z)
-    ax.plot(right_arm_x, right_arm_y, right_arm_z)
-    ax.plot(left_arm_x, left_arm_y, left_arm_z)
-    ax.plot(right_body_side_x, right_body_side_y, right_body_side_z)
-    ax.plot(left_body_side_x, left_body_side_y, left_body_side_z)
-    ax.plot(shoulder_x, shoulder_y, shoulder_z)
-    ax.plot(waist_x, waist_y, waist_z)
-
-    plt.savefig.jpeg_quality = 50
-    plt.savefig('coords_fig/coords.jpg')
-    
-    image_3d = cv2.imread('coords_fig/coords.jpg')
-    image_3d = image_3d[351:702, 241:482]
-    label_show(label=self.labelMAYA, image=image_3d)
+        image_3d = cv2.imread('coords_fig/coords.jpg')
+        image_3d = image_3d[470:940, 241:482]
+        label_show(label=self.labelMAYA, image=image_3d)
 
     return
 
@@ -922,7 +932,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def start_detect(self): 
  
-        # label_show(label=self.labelMAYA, image=cv2.imread('src/MAYA_default.png'))
         self.camera = True
         # 引数解析 #################################################################
         args = get_args()
@@ -1023,7 +1032,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if (face_landmarks is None) or (pose_landmarks is None) or (right_hand_landmarks is None):
                 img_r = cv2.imread('image/result_default.png')
                 label_show(label=self.labelResult, image=img_r)
-                self.print_log(log_words=f' [Searching for Landmarks] ')
+                seconds = time.time()
+                de_sec = seconds*10
+                count = (de_sec//1)%10
+                if count == 0:
+                    self.print_log(log_words=f' [Searching for Landmarks] ')
                 status = False
             
             else:
@@ -1035,7 +1048,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.print_log(log_words=f' [Check!] ')
                     status = True
 
-            label_show(label=self.labelMAYA, image=cv2.imread('src/MAYA_default.png'))
             label_show(label=self.labelImageOrVideo, image=debug_image)
             # label_show(label=self.labelImageOrVideo, image=cv2_image)
             cv2.waitKey(0)
@@ -1102,7 +1114,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # World座標プロット ########################################################
         import matplotlib.pyplot as plt        
-        fig = plt.figure(figsize=(7.32,10.53))
+        fig = plt.figure(figsize=(7.32,14.1))
         ax = fig.add_subplot(111, projection="3d")
         fig.subplots_adjust(left=0.0, right=1, bottom=0, top=1)
                 
@@ -1123,6 +1135,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             image.flags.writeable = False
+            # cv2.rectangle(image, (0, 0), (200, 691), (204, 255, 102), -1) # cover for user
             self.results = holistic.process(image)
             image.flags.writeable = True
 
@@ -1187,7 +1200,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if (face_landmarks is None) or (pose_landmarks is None) or (right_hand_landmarks is None):
                 img_r = cv2.imread('image/result_default.png')
                 label_show(label=self.labelResult, image=img_r)
-                self.print_log(log_words=f' [Searching for Landmarks] ')
+                seconds = time.time()
+                de_sec = seconds*10
+                count = (de_sec//1)%10
+                if count == 0:
+                    self.print_log(log_words=f' [Searching for Landmarks] ')
                 status = False
 
                        
@@ -1208,8 +1225,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.results.pose_world_landmarks,)
             else :  
                 img_3d = cv2.imread('image/3d_default.png')
-                label_show(label=self.labelMAYA, image=img_3d)              
-                self.print_log(log_words=f' [Searching for 3D_Landmarks] ')
+                label_show(label=self.labelMAYA, image=img_3d) 
+                seconds = time.time()
+                de_sec = seconds*10
+                count = (de_sec//1)%10
+                if count == 0:             
+                    self.print_log(log_words=f' [Searching for 3D_Landmarks] ')
 
             label_show(label=self.labelImageOrVideo, image=debug_image)
             # label_show(label=self.labelImageOrVideo, image=cv2_image)
@@ -1270,8 +1291,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         camera = cv2.VideoCapture(self.camera_selected)
         self.cap = camera
         self.print_log(log_words=f' [Opening Camera] ')
-        label_show(label=self.labelMAYA, image=cv2.imread('src/MAYA_default.png'))
-
+        
         while self.mode_key == 0 :
             ret, image = camera.read()
             if not ret:
@@ -1281,7 +1301,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
             image = cv2.flip(image, 1)  # ミラー表示
             # image = image[0:720, 720:1280] # not functioning with cvtColor
-            # debug_image = copy.deepcopy(image)
+            debug_image = copy.deepcopy(image)
             
 
             # 検出実施 #############################################################
@@ -1291,7 +1311,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # self.results = holistic.process(image)
             # image.flags.writeable = True
 
-            label_show(label=self.labelImageOrVideo, image=image)
+            label_show(label=self.labelImageOrVideo, image=debug_image)
             # label_show(label=self.labelImageOrVideo, image=cv2_image)
             cv2.waitKey(0)
             cv2.waitKey(int(1000 / self.videoFPS))
@@ -1302,13 +1322,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.print_log(log_words=f'set video fps: {str(number)}')
 
     def close_camera(self):
-        self.camera = False
-        self.cap.release()
-        self.print_log(log_words='camera has been closed')
-        self.maya(action=False)
-        label_show(label=self.labelResult, image=cv2.imread('src/result_default.png'))
-        label_show(label=self.labelMAYA, image=cv2.imread('src/MAYA_default.png'))
-        label_show(label=self.labelImageOrVideo, image=cv2.imread('src/default.png'))
+        if self.camera == True :        
+            self.camera = False
+            self.cap.release()
+            self.print_log(log_words='camera has been closed')
+            self.maya(action=False)
+            label_show(label=self.labelResult, image=cv2.imread('src/result_default.png'))
+            label_show(label=self.labelMAYA, image=cv2.imread('src/MAYA_default.png'))
+            label_show(label=self.labelImageOrVideo, image=cv2.imread('src/default.png'))
 
     def select_camera(self):
         if self.camera_selected == 0:
