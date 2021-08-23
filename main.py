@@ -23,8 +23,8 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--device", type=int, default=0)
-    parser.add_argument("--width", help='cap width', type=int, default=None)
-    parser.add_argument("--height", help='cap height', type=int, default=None)
+    parser.add_argument("--width", help='cap width', type=int, default=640)
+    parser.add_argument("--height", help='cap height', type=int, default=480)
 
     
     parser.add_argument("--model_complexity",
@@ -48,6 +48,7 @@ def get_args():
     return args
 
 def draw_hands_landmarks(
+        draw,
         image,
         cx,
         cy,
@@ -56,8 +57,6 @@ def draw_hands_landmarks(
         handedness_str='R'):
     image_width, image_height = image.shape[1], image.shape[0]
 
-    landmark_color = (204,255,102)
-    link_color = (0,255,0)
     landmark_point = []
 
     # キーポイント
@@ -71,105 +70,109 @@ def draw_hands_landmarks(
 
         landmark_point.append((landmark_x, landmark_y))
 
+        draw_color = (204,255,102)
+        draw_with_detection = draw
+
+
         if index == 0:  # 手首1
-            cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+            cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 1:  # 手首2
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 2:  # 親指：付け根
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 3:  # 親指：第1関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 4:  # 親指：指先
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
-        #     cv2.circle(image, (landmark_x, landmark_y), 12, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 12, draw_color, 2)
         # if index == 5:  # 人差指：付け根
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 6:  # 人差指：第2関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 7:  # 人差指：第1関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 8:  # 人差指：指先
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
-        #     cv2.circle(image, (landmark_x, landmark_y), 12, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 12, draw_color, 2)
         # if index == 9:  # 中指：付け根
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 10:  # 中指：第2関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 11:  # 中指：第1関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         if index == 12:  # 中指：指先
-            cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
-            cv2.circle(image, (landmark_x, landmark_y), 12, landmark_color , 2)
+            cv2.circle(image, (landmark_x, landmark_y), 5, draw_with_detection, 2)
+            cv2.circle(image, (landmark_x, landmark_y), 12, draw_with_detection, 2)
         # if index == 13:  # 薬指：付け根
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 14:  # 薬指：第2関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 15:  # 薬指：第1関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 16:  # 薬指：指先
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
-        #     cv2.circle(image, (landmark_x, landmark_y), 12, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 12, draw_color, 2)
         # if index == 17:  # 小指：付け根
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 18:  # 小指：第2関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 19:  # 小指：第1関節
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         # if index == 20:  # 小指：指先
-        #     cv2.circle(image, (landmark_x, landmark_y), 5, landmark_color , 2)
-        #     cv2.circle(image, (landmark_x, landmark_y), 12, landmark_color , 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
+        #     cv2.circle(image, (landmark_x, landmark_y), 12, draw_color, 2)
 
         # if not upper_body_only:
-        # if index == 12:
-        #     cv2.putText(image, "z:" + str(round(landmark_z, 3)),
-        #             (landmark_x - 10, landmark_y - 10),
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 250), 1,
-        #             cv2.LINE_AA)
+        if index == 12:
+            cv2.putText(image, "y:" + str(round(landmark_y, 3)),
+                       (landmark_x - 10, landmark_y - 10),
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,250), 1,
+                       cv2.LINE_AA)
 
     # 接続線
     # if len(landmark_point) > 0:
     #     # 親指
-    #     cv2.line(image, landmark_point[2], landmark_point[3], link_color , 2)
-    #     cv2.line(image, landmark_point[3], landmark_point[4], link_color , 2)
+    #     cv2.line(image, landmark_point[2], landmark_point[3], draw_color, 2)
+    #     cv2.line(image, landmark_point[3], landmark_point[4], draw_color, 2)
 
     #     # 人差指
-    #     cv2.line(image, landmark_point[5], landmark_point[6], link_color , 2)
-    #     cv2.line(image, landmark_point[6], landmark_point[7], link_color , 2)
-    #     cv2.line(image, landmark_point[7], landmark_point[8], link_color , 2)
+    #     cv2.line(image, landmark_point[5], landmark_point[6], draw_color, 2)
+    #     cv2.line(image, landmark_point[6], landmark_point[7], draw_color, 2)
+    #     cv2.line(image, landmark_point[7], landmark_point[8], draw_color, 2)
 
     #     # 中指
-    #     cv2.line(image, landmark_point[9], landmark_point[10], link_color , 2)
-    #     cv2.line(image, landmark_point[10], landmark_point[11], link_color , 2)
-    #     cv2.line(image, landmark_point[11], landmark_point[12], link_color , 2)
+    #     cv2.line(image, landmark_point[9], landmark_point[10], draw_color, 2)
+    #     cv2.line(image, landmark_point[10], landmark_point[11], draw_color, 2)
+    #     cv2.line(image, landmark_point[11], landmark_point[12], draw_color, 2)
 
     #     # 薬指
-    #     cv2.line(image, landmark_point[13], landmark_point[14], link_color , 2)
-    #     cv2.line(image, landmark_point[14], landmark_point[15], link_color , 2)
-    #     cv2.line(image, landmark_point[15], landmark_point[16], link_color , 2)
+    #     cv2.line(image, landmark_point[13], landmark_point[14], draw_color, 2)
+    #     cv2.line(image, landmark_point[14], landmark_point[15], draw_color, 2)
+    #     cv2.line(image, landmark_point[15], landmark_point[16], draw_color, 2)
 
     #     # 小指
-    #     cv2.line(image, landmark_point[17], landmark_point[18], link_color , 2)
-    #     cv2.line(image, landmark_point[18], landmark_point[19], link_color , 2)
-    #     cv2.line(image, landmark_point[19], landmark_point[20], link_color , 2)
+    #     cv2.line(image, landmark_point[17], landmark_point[18], draw_color, 2)
+    #     cv2.line(image, landmark_point[18], landmark_point[19], draw_color, 2)
+    #     cv2.line(image, landmark_point[19], landmark_point[20], draw_color, 2)
 
     #     # 手の平
-    #     cv2.line(image, landmark_point[0], landmark_point[1], link_color , 2)
-    #     cv2.line(image, landmark_point[1], landmark_point[2], link_color , 2)
-    #     cv2.line(image, landmark_point[2], landmark_point[5], link_color , 2)
-    #     cv2.line(image, landmark_point[5], landmark_point[9], link_color , 2)
-    #     cv2.line(image, landmark_point[9], landmark_point[13], link_color , 2)
-    #     cv2.line(image, landmark_point[13], landmark_point[17], link_color , 2)
-    #     cv2.line(image, landmark_point[17], landmark_point[0], link_color , 2)
+    #     cv2.line(image, landmark_point[0], landmark_point[1], draw_color, 2)
+    #     cv2.line(image, landmark_point[1], landmark_point[2], draw_color, 2)
+    #     cv2.line(image, landmark_point[2], landmark_point[5], draw_color, 2)
+    #     cv2.line(image, landmark_point[5], landmark_point[9], draw_color, 2)
+    #     cv2.line(image, landmark_point[9], landmark_point[13], draw_color, 2)
+    #     cv2.line(image, landmark_point[13], landmark_point[17], draw_color, 2)
+    #     cv2.line(image, landmark_point[17], landmark_point[0], draw_color, 2)
 
     # 重心 + 左右
     if len(landmark_point) > 0:
-        cv2.circle(image, (cx, cy), 12, landmark_color , 2)
+        cv2.circle(image, (cx, cy), 12, draw_color, 2)
         cv2.putText(image, handedness_str, (cx - 6, cy + 6),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 250, 250), 2, cv2.LINE_AA)
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 250, 250), 2, cv2.LINE_AA)
 
     return image
 
-def draw_face_landmarks(image, landmarks):
+def draw_face_landmarks(draw, image, landmarks):
     image_width, image_height = image.shape[1], image.shape[0]
 
     landmark_point = []
@@ -182,172 +185,170 @@ def draw_face_landmarks(image, landmarks):
         landmark_y = min(int(landmark.y * image_height), image_height - 1)
         landmark_z = landmark.z
 
-        link_color = (255,0,0)
-        link_color_1 = (255,0,0)
-
         landmark_point.append((landmark_x, landmark_y))
         target_num_p = [5 ,168 ,200]
+        draw_color = draw
 
-        # if index in target_num_p:
-        #     cv2.putText(image, "z:" + str(round(landmark_z, 3)),
-        #             (landmark_x - 10, landmark_y - 10),
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, link_color , 1,
-        #             cv2.LINE_AA)
+        if index in target_num_p:
+            cv2.putText(image, "z:" + str(round(landmark_z, 3)),
+                       (landmark_x - 10, landmark_y - 10),
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,250), 1,
+                       cv2.LINE_AA)
 
-        # cv2.circle(image, (landmark_x, landmark_y), 1, link_color_1, 1)
+        # cv2.circle(image, (landmark_x, landmark_y), 1, draw_color, 1)
 
     if len(landmark_point) > 0:
         # 参考：https://github.com/tensorflow/tfjs-models/blob/master/facemesh/mesh_map.jpg        
         
         # 中線(168、5、200)
-        cv2.line(image, landmark_point[10], landmark_point[151], link_color , 2)
-        cv2.line(image, landmark_point[151], landmark_point[9], link_color , 2)
-        cv2.line(image, landmark_point[9], landmark_point[8], link_color , 2)
-        cv2.line(image, landmark_point[8], landmark_point[168], link_color , 2)
-        cv2.line(image, landmark_point[168], landmark_point[6], link_color , 2)
-        cv2.line(image, landmark_point[6], landmark_point[197], link_color , 2)
-        cv2.line(image, landmark_point[197], landmark_point[195], link_color , 2)
-        cv2.line(image, landmark_point[195], landmark_point[5], link_color , 2)
-        cv2.line(image, landmark_point[5], landmark_point[4], link_color , 2)
-        cv2.line(image, landmark_point[4], landmark_point[1], link_color , 2)
-        cv2.line(image, landmark_point[1], landmark_point[19], link_color , 2)
-        cv2.line(image, landmark_point[19], landmark_point[94], link_color , 2)
-        cv2.line(image, landmark_point[94], landmark_point[2], link_color , 2)
-        cv2.line(image, landmark_point[2], landmark_point[164], link_color , 2)
-        cv2.line(image, landmark_point[164], landmark_point[0], link_color , 2)
-        cv2.line(image, landmark_point[0], landmark_point[11], link_color , 2)
-        cv2.line(image, landmark_point[11], landmark_point[12], link_color , 2)
-        cv2.line(image, landmark_point[12], landmark_point[13], link_color , 2)
-        cv2.line(image, landmark_point[13], landmark_point[14], link_color , 2)
-        cv2.line(image, landmark_point[14], landmark_point[15], link_color , 2)
-        cv2.line(image, landmark_point[15], landmark_point[16], link_color , 2)
-        cv2.line(image, landmark_point[16], landmark_point[17], link_color , 2)
-        cv2.line(image, landmark_point[17], landmark_point[18], link_color , 2)
-        cv2.line(image, landmark_point[18], landmark_point[200], link_color , 2)
-        cv2.line(image, landmark_point[200], landmark_point[199], link_color , 2)
-        cv2.line(image, landmark_point[199], landmark_point[175], link_color , 2)
-        cv2.line(image, landmark_point[175], landmark_point[152], link_color , 2)
+        cv2.line(image, landmark_point[10], landmark_point[151], draw_color, 2)
+        cv2.line(image, landmark_point[151], landmark_point[9], draw_color, 2)
+        cv2.line(image, landmark_point[9], landmark_point[8], draw_color, 2)
+        cv2.line(image, landmark_point[8], landmark_point[168], draw_color, 2)
+        cv2.line(image, landmark_point[168], landmark_point[6], draw_color, 2)
+        cv2.line(image, landmark_point[6], landmark_point[197], draw_color, 2)
+        cv2.line(image, landmark_point[197], landmark_point[195], draw_color, 2)
+        cv2.line(image, landmark_point[195], landmark_point[5], draw_color, 2)
+        cv2.line(image, landmark_point[5], landmark_point[4], draw_color, 2)
+        cv2.line(image, landmark_point[4], landmark_point[1], draw_color, 2)
+        cv2.line(image, landmark_point[1], landmark_point[19], draw_color, 2)
+        cv2.line(image, landmark_point[19], landmark_point[94], draw_color, 2)
+        cv2.line(image, landmark_point[94], landmark_point[2], draw_color, 2)
+        cv2.line(image, landmark_point[2], landmark_point[164], draw_color, 2)
+        cv2.line(image, landmark_point[164], landmark_point[0], draw_color, 2)
+        cv2.line(image, landmark_point[0], landmark_point[11], draw_color, 2)
+        cv2.line(image, landmark_point[11], landmark_point[12], draw_color, 2)
+        cv2.line(image, landmark_point[12], landmark_point[13], draw_color, 2)
+        cv2.line(image, landmark_point[13], landmark_point[14], draw_color, 2)
+        cv2.line(image, landmark_point[14], landmark_point[15], draw_color, 2)
+        cv2.line(image, landmark_point[15], landmark_point[16], draw_color, 2)
+        cv2.line(image, landmark_point[16], landmark_point[17], draw_color, 2)
+        cv2.line(image, landmark_point[17], landmark_point[18], draw_color, 2)
+        cv2.line(image, landmark_point[18], landmark_point[200], draw_color, 2)
+        cv2.line(image, landmark_point[200], landmark_point[199], draw_color, 2)
+        cv2.line(image, landmark_point[199], landmark_point[175], draw_color, 2)
+        cv2.line(image, landmark_point[175], landmark_point[152], draw_color, 2)
 
         # Cross Line
-        cv2.line(image, landmark_point[234], landmark_point[227], link_color , 2)
-        cv2.line(image, landmark_point[116], landmark_point[117], link_color , 2)
-        cv2.line(image, landmark_point[118], landmark_point[100], link_color , 2)
-        cv2.line(image, landmark_point[126], landmark_point[198], link_color , 2)
-        cv2.line(image, landmark_point[134], landmark_point[51], link_color , 2)
-        cv2.line(image, landmark_point[281], landmark_point[363], link_color , 2)
-        cv2.line(image, landmark_point[420], landmark_point[355], link_color , 2)
-        cv2.line(image, landmark_point[329], landmark_point[347], link_color , 2)
-        cv2.line(image, landmark_point[346], landmark_point[345], link_color , 2)
-        cv2.line(image, landmark_point[447], landmark_point[454], link_color , 2)
+        cv2.line(image, landmark_point[234], landmark_point[227], draw_color, 2)
+        cv2.line(image, landmark_point[116], landmark_point[117], draw_color, 2)
+        cv2.line(image, landmark_point[118], landmark_point[100], draw_color, 2)
+        cv2.line(image, landmark_point[126], landmark_point[198], draw_color, 2)
+        cv2.line(image, landmark_point[134], landmark_point[51], draw_color, 2)
+        cv2.line(image, landmark_point[281], landmark_point[363], draw_color, 2)
+        cv2.line(image, landmark_point[420], landmark_point[355], draw_color, 2)
+        cv2.line(image, landmark_point[329], landmark_point[347], draw_color, 2)
+        cv2.line(image, landmark_point[346], landmark_point[345], draw_color, 2)
+        cv2.line(image, landmark_point[447], landmark_point[454], draw_color, 2)
         
         
         # # 左眉毛(55：内側、46：外側)
-        # cv2.line(image, landmark_point[55], landmark_point[65], link_color_1, 2)
-        # cv2.line(image, landmark_point[65], landmark_point[52], link_color_1, 2)
-        # cv2.line(image, landmark_point[52], landmark_point[53], link_color_1, 2)
-        # cv2.line(image, landmark_point[53], landmark_point[46], link_color_1, 2)
+        # cv2.line(image, landmark_point[55], landmark_point[65], draw_color, 2)
+        # cv2.line(image, landmark_point[65], landmark_point[52], draw_color, 2)
+        # cv2.line(image, landmark_point[52], landmark_point[53], draw_color, 2)
+        # cv2.line(image, landmark_point[53], landmark_point[46], draw_color, 2)
 
         # # 右眉毛(285：内側、276：外側)
-        # cv2.line(image, landmark_point[285], landmark_point[295], link_color_1,
+        # cv2.line(image, landmark_point[285], landmark_point[295], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[295], landmark_point[282], link_color_1,
+        # cv2.line(image, landmark_point[295], landmark_point[282], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[282], landmark_point[283], link_color_1,
+        # cv2.line(image, landmark_point[282], landmark_point[283], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[283], landmark_point[276], link_color_1,
+        # cv2.line(image, landmark_point[283], landmark_point[276], draw_color,
         #         2)
 
         # # 左目 (133：目頭、246：目尻)
-        # cv2.line(image, landmark_point[133], landmark_point[173], link_color_1,
+        # cv2.line(image, landmark_point[133], landmark_point[173], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[173], landmark_point[157], link_color_1,
+        # cv2.line(image, landmark_point[173], landmark_point[157], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[157], landmark_point[158], link_color_1,
+        # cv2.line(image, landmark_point[157], landmark_point[158], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[158], landmark_point[159], link_color_1,
+        # cv2.line(image, landmark_point[158], landmark_point[159], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[159], landmark_point[160], link_color_1,
+        # cv2.line(image, landmark_point[159], landmark_point[160], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[160], landmark_point[161], link_color_1,
+        # cv2.line(image, landmark_point[160], landmark_point[161], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[161], landmark_point[246], link_color_1,
+        # cv2.line(image, landmark_point[161], landmark_point[246], draw_color,
         #         2)
 
-        # cv2.line(image, landmark_point[246], landmark_point[163], link_color_1,
+        # cv2.line(image, landmark_point[246], landmark_point[163], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[163], landmark_point[144], link_color_1,
+        # cv2.line(image, landmark_point[163], landmark_point[144], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[144], landmark_point[145], link_color_1,
+        # cv2.line(image, landmark_point[144], landmark_point[145], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[145], landmark_point[153], link_color_1,
+        # cv2.line(image, landmark_point[145], landmark_point[153], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[153], landmark_point[154], link_color_1,
+        # cv2.line(image, landmark_point[153], landmark_point[154], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[154], landmark_point[155], link_color_1,
+        # cv2.line(image, landmark_point[154], landmark_point[155], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[155], landmark_point[133], link_color_1,
+        # cv2.line(image, landmark_point[155], landmark_point[133], draw_color,
         #         2)
 
         # # 右目 (362：目頭、466：目尻)
-        # cv2.line(image, landmark_point[362], landmark_point[398], link_color_1,
+        # cv2.line(image, landmark_point[362], landmark_point[398], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[398], landmark_point[384], link_color_1,
+        # cv2.line(image, landmark_point[398], landmark_point[384], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[384], landmark_point[385], link_color_1,
+        # cv2.line(image, landmark_point[384], landmark_point[385], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[385], landmark_point[386], link_color_1,
+        # cv2.line(image, landmark_point[385], landmark_point[386], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[386], landmark_point[387], link_color_1,
+        # cv2.line(image, landmark_point[386], landmark_point[387], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[387], landmark_point[388], link_color_1,
+        # cv2.line(image, landmark_point[387], landmark_point[388], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[388], landmark_point[466], link_color_1,
+        # cv2.line(image, landmark_point[388], landmark_point[466], draw_color,
         #         2)
 
-        # cv2.line(image, landmark_point[466], landmark_point[390], link_color_1,
+        # cv2.line(image, landmark_point[466], landmark_point[390], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[390], landmark_point[373], link_color_1,
+        # cv2.line(image, landmark_point[390], landmark_point[373], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[373], landmark_point[374], link_color_1,
+        # cv2.line(image, landmark_point[373], landmark_point[374], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[374], landmark_point[380], link_color_1,
+        # cv2.line(image, landmark_point[374], landmark_point[380], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[380], landmark_point[381], link_color_1,
+        # cv2.line(image, landmark_point[380], landmark_point[381], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[381], landmark_point[382], link_color_1,
+        # cv2.line(image, landmark_point[381], landmark_point[382], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[382], landmark_point[362], link_color_1,
+        # cv2.line(image, landmark_point[382], landmark_point[362], draw_color,
         #         2)
 
         # # 口 (308：右端、78：左端)
-        # cv2.line(image, landmark_point[308], landmark_point[415], link_color_1,
+        # cv2.line(image, landmark_point[308], landmark_point[415], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[415], landmark_point[310], link_color_1,
+        # cv2.line(image, landmark_point[415], landmark_point[310], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[310], landmark_point[311], link_color_1,
+        # cv2.line(image, landmark_point[310], landmark_point[311], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[311], landmark_point[312], link_color_1,
+        # cv2.line(image, landmark_point[311], landmark_point[312], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[312], landmark_point[13], link_color_1, 2)
-        # cv2.line(image, landmark_point[13], landmark_point[82], link_color_1, 2)
-        # cv2.line(image, landmark_point[82], landmark_point[81], link_color_1, 2)
-        # cv2.line(image, landmark_point[81], landmark_point[80], link_color_1, 2)
-        # cv2.line(image, landmark_point[80], landmark_point[191], link_color_1, 2)
-        # cv2.line(image, landmark_point[191], landmark_point[78], link_color_1, 2)
+        # cv2.line(image, landmark_point[312], landmark_point[13], draw_color, 2)
+        # cv2.line(image, landmark_point[13], landmark_point[82], draw_color, 2)
+        # cv2.line(image, landmark_point[82], landmark_point[81], draw_color, 2)
+        # cv2.line(image, landmark_point[81], landmark_point[80], draw_color, 2)
+        # cv2.line(image, landmark_point[80], landmark_point[191], draw_color, 2)
+        # cv2.line(image, landmark_point[191], landmark_point[78], draw_color, 2)
 
-        # cv2.line(image, landmark_point[78], landmark_point[95], link_color_1, 2)
-        # cv2.line(image, landmark_point[95], landmark_point[88], link_color_1, 2)
-        # cv2.line(image, landmark_point[88], landmark_point[178], link_color_1, 2)
-        # cv2.line(image, landmark_point[178], landmark_point[87], link_color_1, 2)
-        # cv2.line(image, landmark_point[87], landmark_point[14], link_color_1, 2)
-        # cv2.line(image, landmark_point[14], landmark_point[317], link_color_1, 2)
-        # cv2.line(image, landmark_point[317], landmark_point[402], link_color_1,
+        # cv2.line(image, landmark_point[78], landmark_point[95], draw_color, 2)
+        # cv2.line(image, landmark_point[95], landmark_point[88], draw_color, 2)
+        # cv2.line(image, landmark_point[88], landmark_point[178], draw_color, 2)
+        # cv2.line(image, landmark_point[178], landmark_point[87], draw_color, 2)
+        # cv2.line(image, landmark_point[87], landmark_point[14], draw_color, 2)
+        # cv2.line(image, landmark_point[14], landmark_point[317], draw_color, 2)
+        # cv2.line(image, landmark_point[317], landmark_point[402], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[402], landmark_point[318], link_color_1,
+        # cv2.line(image, landmark_point[402], landmark_point[318], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[318], landmark_point[324], link_color_1,
+        # cv2.line(image, landmark_point[318], landmark_point[324], draw_color,
         #         2)
-        # cv2.line(image, landmark_point[324], landmark_point[308], link_color_1,
+        # cv2.line(image, landmark_point[324], landmark_point[308], draw_color,
         #         2)
             
     return image
@@ -364,6 +365,8 @@ def draw_pose_landmarks(
     landmark_color = (204,255,102)
     link_color = (0,255,0)
     landmark_point = []
+    # indicate cover region
+    cv2.line(image,(200, 0),(200, 691),(204, 255, 102), 1, cv2.LINE_AA)
 
     for index, landmark in enumerate(landmarks.landmark):
         landmark_x = min(int(landmark.x * image_width), image_width - 1)
@@ -623,7 +626,7 @@ def calc_palm_moment(image, landmarks):
 
 def detection(self,image,lh_l, fa_l, po_l):
 
-    with open('body_language_003.pkl', 'rb') as f:
+    with open('body_language_007_1.pkl', 'rb') as f:
         model = pickle.load(f)
 
     lh_list = [0,12]
@@ -690,15 +693,17 @@ def detection(self,image,lh_l, fa_l, po_l):
                     np.array(
                         (po_l.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].x, 
                             po_l.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].y))
-                , [640,480]).astype(int))
+                , [640,500]).astype(int))
     
+    # indicate cover region
+    # cv2.line(image,(200, 0),(200, 691),(204, 255, 102), 1, cv2.LINE_AA)
     # cv2.rectangle(image, (0, 0), (200, 691), (204, 255, 102), -1) # cover for user
     cv2.rectangle(image, 
-                    (coords[0], coords[1]+5), 
-                    (coords[0]+len(body_language_class)*20, coords[1]-30), 
+                    (coords[0]-2, coords[1]+5), 
+                    (coords[0]+len(body_language_class)*16, coords[1]-20), 
                     (245, 117, 16), -1)
     cv2.putText(image, body_language_class, coords, 
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
     
 
     # shape = (111, 241, 3) # y, x, RGB
@@ -882,7 +887,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QtWidgets.QApplication.processEvents()
 
     def initUI(self):
-        self.setWindowTitle('Testing Project')
+        self.setWindowTitle('Python_Mediapipe_Palmer_Drama')
 
         self.actionLoadImage.triggered.connect(self.load_image)
         self.actionStart.triggered.connect(self.start_detect)
@@ -962,7 +967,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image = cv2.flip(image, 1)  # ミラー表示
             # image = image[0:720, 720:1280] # not functioning with cvtColor
             debug_image = copy.deepcopy(image)
-            
+            image_width, image_height = 640, 480
 
             # 検出実施 #############################################################
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -976,9 +981,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if face_landmarks is not None:
                 # 外接矩形の計算
                 # brect = calc_bounding_rect(debug_image, face_landmarks)
-                # 描画
-                debug_image = draw_face_landmarks(debug_image, face_landmarks)
+
+                # キーポイント
+                for index, landmark in enumerate(face_landmarks.landmark):
+                    if landmark.visibility < 0 or landmark.presence < 0:
+                        continue
+
+                    landmark_x = min(int(landmark.x * image_width), image_width - 1)
+                    landmark_y = min(int(landmark.y * image_height), image_height - 1)
+
+                    if index == 234:  
+                        coords_re = landmark_y
+
+                    if index == 454:  
+                        coords_le = landmark_y
+
+                # Check the Height of Left Hand
+                if (coords_re > coords_le + 10) or (coords_re < coords_le - 10) :
+                    draw_c = (0,0,255)
+                
+                    cv2.putText(debug_image, 'Try To Keep The Head Straight !'
+                            , (10,40), cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 100, 255), 2, cv2.LINE_AA)
+
+                else :
+                    draw_c = (255,204,102)
+
+                debug_image = draw_face_landmarks(draw_c, debug_image, face_landmarks)
                 # debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                
 
             # Pose ###############################################################
             pose_landmarks = self.results.pose_landmarks
@@ -992,10 +1022,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # upper_body_only,
                 )
                 # debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                # Grab Left shoulder coords
+                coords_s = tuple(np.multiply(
+                            np.array(
+                                (pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.RIGHT_SHOULDER].x, 
+                                    pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.RIGHT_SHOULDER].y))
+                        , [image_height,image_width]).astype(int))
+
+                # Grab ear coords
+                coords = tuple(np.multiply(
+                                np.array(
+                                    (pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].x, 
+                                        pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].y))
+                            , [image_height,image_width]).astype(int))
             
             # Hands ###############################################################
             left_hand_landmarks = self.results.left_hand_landmarks
             right_hand_landmarks = self.results.right_hand_landmarks
+
+            coords_mf_y = 0
+
             # 左手
             if left_hand_landmarks is not None:
                 # 手の平重心計算
@@ -1018,8 +1064,52 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 cx, cy = calc_palm_moment(debug_image, right_hand_landmarks)
                 # 外接矩形の計算
                 # brect = calc_bounding_rect(debug_image, right_hand_landmarks)
-                # 描画
+                # # キーポイント
+                for index, landmark in enumerate(right_hand_landmarks.landmark):
+                    if landmark.visibility < 0 or landmark.presence < 0:
+                        continue
+
+                    landmark_x = min(int(landmark.x * image_width), image_width - 1)
+                    landmark_y = min(int(landmark.y * image_height), image_height - 1)
+
+                    if index == 12:  
+                        coords_mf_y = landmark_y
+
+                #  Check the Height of Left Hand
+                if coords_mf_y > coords_s[1]+ 100 :
+                    draw_c = (255,0,0)
+                
+                    cv2.rectangle(debug_image, 
+                                    (coords[0], coords[1]+5), 
+                                    (coords[0]+len('Too Low')*20, coords[1]-30), 
+                                    (255,0,0), -1)
+                    cv2.putText(debug_image, 'Too Low', coords, 
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+
+                else :
+                    if coords_mf_y < coords_s[1] :
+                        draw_c = (0,0,255)
+                        
+                        cv2.rectangle(debug_image, 
+                                        (coords[0], coords[1]+5), 
+                                        (coords[0]+len('Too High')*20, coords[1]-30), 
+                                        (0,0,255), -1)
+                        cv2.putText(debug_image, 'Too High', coords, 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    
+                    else :
+                        draw_c = (255,204,102)
+
+                        cv2.rectangle(debug_image, 
+                                        (coords[0], coords[1]+5), 
+                                        (coords[0]+len('Looking Good')*20, coords[1]-30), 
+                                        (255,204,102), -1)
+                        cv2.putText(debug_image, 'Looking Good', coords, 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+
+                # draw_c = (255,204,102) # Default
                 debug_image = draw_hands_landmarks(
+                    draw_c,
                     debug_image,
                     cx,
                     cy,
@@ -1129,13 +1219,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image = cv2.flip(image, 1)  # ミラー表示
             # image = image[0:720, 720:1280] # not functioning with cvtColor
             debug_image = copy.deepcopy(image)
+            image_width, image_height = 640, 480
             
 
             # 検出実施 #############################################################
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             image.flags.writeable = False
-            # cv2.rectangle(image, (0, 0), (200, 691), (204, 255, 102), -1) # cover for user
+            cv2.rectangle(image, (0, 0), (200, 691), (204, 255, 102), -1) # cover for user
             self.results = holistic.process(image)
             image.flags.writeable = True
 
@@ -1144,9 +1235,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if face_landmarks is not None:
                 # 外接矩形の計算
                 # brect = calc_bounding_rect(debug_image, face_landmarks)
-                # 描画
-                debug_image = draw_face_landmarks(debug_image, face_landmarks)
+
+                # キーポイント
+                for index, landmark in enumerate(face_landmarks.landmark):
+                    if landmark.visibility < 0 or landmark.presence < 0:
+                        continue
+
+                    landmark_x = min(int(landmark.x * image_width), image_width - 1)
+                    landmark_y = min(int(landmark.y * image_height), image_height - 1)
+
+                    if index == 234:  
+                        coords_re = landmark_y
+
+                    if index == 454:  
+                        coords_le = landmark_y
+
+                # Check the Height of Left Hand
+                if (coords_re > coords_le + 10) or (coords_re < coords_le - 10) :
+                    draw_c = (0,0,255)
+                
+                    cv2.putText(debug_image, 'Try To Keep The Head Straight !'
+                            , (10,40), cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 100, 255), 2, cv2.LINE_AA)
+
+                else :
+                    draw_c = (255,204,102)
+
+                debug_image = draw_face_landmarks(draw_c, debug_image, face_landmarks)
                 # debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                
 
             # Pose ###############################################################
             pose_landmarks = self.results.pose_landmarks
@@ -1160,10 +1276,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # upper_body_only,
                 )
                 # debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                # Grab Left shoulder coords
+                coords_s = tuple(np.multiply(
+                            np.array(
+                                (pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.RIGHT_SHOULDER].x, 
+                                    pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.RIGHT_SHOULDER].y))
+                        , [image_height,image_width]).astype(int))
+
+                # Grab ear coords
+                coords = tuple(np.multiply(
+                                np.array(
+                                    (pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].x, 
+                                        pose_landmarks.landmark[mp.solutions.holistic.PoseLandmark.LEFT_EAR].y))
+                            , [image_height,image_width]).astype(int))
             
             # Hands ###############################################################
             left_hand_landmarks = self.results.left_hand_landmarks
             right_hand_landmarks = self.results.right_hand_landmarks
+
+            coords_mf_y = 0
+
             # 左手
             if left_hand_landmarks is not None:
                 # 手の平重心計算
@@ -1186,8 +1318,52 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 cx, cy = calc_palm_moment(debug_image, right_hand_landmarks)
                 # 外接矩形の計算
                 # brect = calc_bounding_rect(debug_image, right_hand_landmarks)
-                # 描画
+                # # キーポイント
+                for index, landmark in enumerate(right_hand_landmarks.landmark):
+                    if landmark.visibility < 0 or landmark.presence < 0:
+                        continue
+
+                    landmark_x = min(int(landmark.x * image_width), image_width - 1)
+                    landmark_y = min(int(landmark.y * image_height), image_height - 1)
+
+                    if index == 12:  
+                        coords_mf_y = landmark_y
+
+                #  Check the Height of Left Hand
+                if coords_mf_y > coords_s[1]+ 100 :
+                    draw_c = (255,0,0)
+                
+                    cv2.rectangle(debug_image, 
+                                    (coords[0], coords[1]+5), 
+                                    (coords[0]+len('Too Low')*20, coords[1]-30), 
+                                    (255,0,0), -1)
+                    cv2.putText(debug_image, 'Too Low', coords, 
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+
+                else :
+                    if coords_mf_y < coords_s[1] :
+                        draw_c = (0,0,255)
+                        
+                        cv2.rectangle(debug_image, 
+                                        (coords[0], coords[1]+5), 
+                                        (coords[0]+len('Too High')*20, coords[1]-30), 
+                                        (0,0,255), -1)
+                        cv2.putText(debug_image, 'Too High', coords, 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    
+                    else :
+                        draw_c = (255,204,102)
+
+                        cv2.rectangle(debug_image, 
+                                        (coords[0], coords[1]+5), 
+                                        (coords[0]+len('Looking Good')*20, coords[1]-30), 
+                                        (255,204,102), -1)
+                        cv2.putText(debug_image, 'Looking Good', coords, 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+
+                draw_c = (255,204,102) # Default
                 debug_image = draw_hands_landmarks(
+                    draw_c,
                     debug_image,
                     cx,
                     cy,
